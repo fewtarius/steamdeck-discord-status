@@ -15,6 +15,14 @@ OP_CLOSE = 2
 OP_PING = 3
 OP_PONG = 4
 
+with open('/sys/class/dmi/id/sys_vendor', 'r') as file:
+    sys_vendor = file.read().replace('\n', '')
+    file.close()
+
+with open('/sys/class/dmi/id/product_version', 'r') as file:
+    product_version = file.read().replace('\n', '')
+    file.close()
+
 class EmptyReceiveException(Exception):
     """Raised when the socket was expected data but did not receive any"""
 
@@ -132,7 +140,7 @@ class Plugin:
                 "args": {
                     "pid": os.getpid(),
                     "activity": {
-                        "state": "on Steam Deck",
+                        "state": "on " + sys_vendor + " " + product_version,
                         "assets": {
                             "large_image": activity["imageUrl"],
                             "small_image": "https://cdn.discordapp.com/app-assets/1055680235682672682/1056080943783354388.png"
