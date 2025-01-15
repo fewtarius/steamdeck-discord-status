@@ -19,9 +19,13 @@ with open('/sys/class/dmi/id/sys_vendor', 'r') as file:
     sys_vendor = file.read().replace('\n', '')
     file.close()
 
-with open('/sys/class/dmi/id/product_version', 'r') as file:
-    product_version = file.read().replace('\n', '')
+with open('/sys/class/dmi/id/product_name', 'r') as file:
+    product_name = file.read().replace('\n', '')
     file.close()
+
+if sys_vendor == "Valve":
+    sys_vendor = "Steam"
+    product_name = "Deck"
 
 class EmptyReceiveException(Exception):
     """Raised when the socket was expected data but did not receive any"""
@@ -140,7 +144,7 @@ class Plugin:
                 "args": {
                     "pid": os.getpid(),
                     "activity": {
-                        "state": "on " + sys_vendor + " " + product_version,
+                        "state": "on " + sys_vendor + " " + product_name,
                         "assets": {
                             "large_image": activity["imageUrl"],
                             "small_image": "https://cdn.discordapp.com/app-assets/1055680235682672682/1056080943783354388.png"
